@@ -1,0 +1,8 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+.env
+local.db
+*.db
+# NOTE: chroma_store/ is NOT ignored on purpose. It is shipped inside the Docker image.

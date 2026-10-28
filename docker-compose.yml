@@ -1,0 +1,32 @@
+# Local development: API + PostgreSQL.  Run: docker compose up --build
+# (On the live server the database is Neon, so only the API image is deployed.)
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: jibon
+      POSTGRES_PASSWORD: jibon
+      POSTGRES_DB: jibon
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jibon"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://jibon:jibon@db:5432/jibon
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
