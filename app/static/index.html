@@ -182,11 +182,12 @@ function welcome(){const d=bubble("<p><b>আসসালামু আলাই�
 $("#sendForm").onsubmit=e=>{e.preventDefault();const t=$("#msg").value.trim();if(t){$("#msg").value="";ask(t)}};
 async function ask(t){bubble(esc(t),true);const b=$("#sendBtn");b.disabled=true;
  const ty=document.createElement("div");ty.className="typing";ty.innerHTML="<i></i><i></i><i></i> The agents are working on it…";$("#log").appendChild(ty);ty.scrollIntoView({block:"end"});
+ const hint=setTimeout(()=>{ty.innerHTML="<i></i><i></i><i></i> Still working. Planning with several agents can take 1 to 2 minutes.";},12000);
  try{const r=await api("/api/chat",{method:"POST",json:{message:t}});ty.remove();const d=bubble(md(r.reply));
   const m=document.createElement("div");m.className="meta";m.innerHTML="<span class='chip'>"+esc(r.crew)+"</span>"+(r.agents_used||[]).map(a=>"<span class='chip'>"+esc(a)+"</span>").join("")+(r.llm_tier==="fallback"?"<span class='chip warn'>Backup AI used</span>":"")+(r.replans?"<span class='chip'>Re-planned "+r.replans+"×</span>":"");d.appendChild(m);
   if(r.sources&&r.sources.length){const s=document.createElement("div");s.className="src";s.innerHTML="<b>Sources</b><br>"+r.sources.map(x=>(x.url?"<a href='"+esc(x.url)+"' target='_blank' rel='noopener'>"+esc(x.title)+"</a>":esc(x.title))+(x.page?" (page "+esc(x.page)+")":"")).join("<br>");d.appendChild(s)}
   (r.proposed_actions||[]).forEach(a=>d.appendChild(actionCard(a)));d.scrollIntoView({block:"end"})
- }catch(x){ty.remove();bubble("<p>⚠️ "+esc(x.message)+"</p>")}b.disabled=false;$("#msg").focus()}
+ }catch(x){ty.remove();bubble("<p>⚠️ "+esc(x.message)+"</p>")}clearTimeout(hint);b.disabled=false;$("#msg").focus()}
 function actionCard(a){const c=document.createElement("div");c.className="act";
  c.innerHTML="<div class='t'><b>Set a reminder for "+esc(a.remind_on)+"?</b><span class='mute'>"+esc(a.message)+"</span></div><button class='btn' type='button'>Yes, set it</button><button class='btn ghost' type='button'>No thanks</button>";
  const [y,n]=c.querySelectorAll("button");n.onclick=()=>c.remove();

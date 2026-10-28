@@ -17,6 +17,8 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 COPY app ./app
+# price list used by the Trip Planner (loaded into the database at startup)
+COPY data/travel_costs.csv ./data/travel_costs.csv
 # The vector database is built on your PC (scripts/ingest.py) and shipped inside the image
 COPY chroma_store ./chroma_store
 

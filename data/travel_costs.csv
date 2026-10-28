@@ -1,8 +1,8 @@
 route,mode,cost_bdt,notes
-Dhaka-Sylhet,bus,0,SAMPLE ROW - replace 0 with a fare you checked yourself (per person one way)
-Dhaka-Sylhet,train,0,SAMPLE ROW - replace 0 with a fare you checked yourself (per person one way)
-Sylhet,hotel,0,SAMPLE ROW - budget hotel per night (replace with a checked price)
-Sylhet,food,0,SAMPLE ROW - food per person per day (replace with your estimate)
-Sylhet,local transport,0,SAMPLE ROW - local transport per day (replace with your estimate)
-Dhaka-Cox's Bazar,bus,0,SAMPLE ROW - replace 0 with a fare you checked yourself (per person one way)
-Cox's Bazar,hotel,0,SAMPLE ROW - budget hotel per night (replace with a checked price)
+Dhaka-Sylhet,bus,700,approx
+Dhaka-Sylhet,train,500,approx
+Sylhet,hotel,2500,approx
+Sylhet,food,500,approx
+Sylhet,local transport,1500,approx
+Dhaka-Cox's Bazar,bus,700,approx
+Cox's Bazar,hotel,3000,approx

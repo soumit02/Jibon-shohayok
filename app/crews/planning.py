@@ -21,23 +21,25 @@ def build_planning_crew(llm, request: str, user_context: str, extra_note: str = 
     planner = Agent(
         role="Trip and Logistics Planner",
         goal="Build a practical plan: how to travel, where to stay, what to do. Use the tools for facts.",
-        backstory="You know travel inside Bangladesh. You never invent prices; you use the cost table or web search.",
+        backstory="You know travel inside Bangladesh. You never invent prices; you use the cost table or at most one web search. You only use the tools you were given (never browser or web_open tools).",
         tools=[make_travel_cost_tool(), make_weather_tool(), make_web_search_tool()],
-        allow_delegation=False, verbose=False, llm=llm, max_iter=6,
+        allow_delegation=False, verbose=False, llm=llm, max_iter=4,
     )
     estimator = Agent(
         role="Budget and Cost Estimator",
         goal="Cost every option, compare with the budget, and say clearly if it is over budget.",
         backstory="You are careful with money. You ALWAYS use the calculator tool for sums and you label prices as estimates.",
         tools=[make_calculator_tool(), make_travel_cost_tool()],
-        allow_delegation=False, verbose=False, llm=llm, max_iter=6,
+        allow_delegation=False, verbose=False, llm=llm, max_iter=4,
     )
 
     plan_task = Task(
         description=(
             f"User request: {request}\n\nWhat we know about the user:\n{user_context}\n\n"
             "Create a travel/event plan with THREE options: Economy, Balanced, Comfort. "
-            "Use lookup_travel_costs first for prices. Use weather_forecast if the trip is within 7 days. "
+            "TOOL BUDGET (very important, it keeps the answer fast): use at most 3 tool calls in total - lookup_travel_costs once, "
+            "weather_forecast at most once (only if the trip is within 7 days), web_search at most once (only if the cost table has no data). "
+            "Then write the plan immediately. "
             "If a price is missing, say 'price not available' - do NOT invent it.\n"
             f"{extra_note}"
         ),

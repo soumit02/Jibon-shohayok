@@ -11,6 +11,7 @@ from app.api import auth, chat, documents, reminders
 from app.core.config import settings
 from app.core.timeutil import as_bd, now_bd
 from app.db.models import Reminder
+from app.db.seed import seed_travel_costs_if_empty
 from app.db.session import IS_SQLITE, SessionLocal, engine, init_db
 from app.rag import retriever
 from app.rag.embeddings import EmbeddingError
@@ -36,6 +37,7 @@ async def lifespan(app: FastAPI):
     scheduler = None
     try:
         init_db()  # creates the tables if they do not exist
+        seed_travel_costs_if_empty()  # fills the price table from data/travel_costs.csv when it is empty
     except Exception as exc:  # the API must still start so that /health can explain the problem
         log.error("Database init failed: %s", exc)
     try:

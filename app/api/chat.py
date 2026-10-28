@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 from sqlalchemy import select
@@ -10,6 +12,7 @@ from app.db.session import get_db
 from app.services.chat_service import handle_chat
 
 router = APIRouter(prefix="/api", tags=["chat"])
+log = logging.getLogger("jibon.chat")
 
 
 class ChatIn(BaseModel):
@@ -23,6 +26,10 @@ def chat(body: ChatIn, user: User = Depends(get_current_user), db: Session = Dep
         return handle_chat(db, user, body.message.strip())
     except LLMUnavailableError as exc:
         raise HTTPException(status_code=503, detail=str(exc))
+    except Exception:
+        log.exception("Chat failed")
+        db.rollback()
+        raise HTTPException(status_code=500, detail="The agents could not finish this request. Please try again in a minute.")
 
 
 @router.get("/chat/history")
