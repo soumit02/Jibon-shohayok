@@ -284,8 +284,21 @@ The app is deployed as a **Docker web service on Render (free plan)**.
 5. After every `git push`, Render rebuilds the image. If it does not, press **Manual Deploy, Deploy latest commit**.
 6. Verify with `/health` (database and RAG status) and `/health/memory` (the free plan has 512 MB RAM).
 
+## 14. Screenshots
 
-## 14. Limitations and Honest Notes
+> Add your own screenshots to `docs/screenshots/` and keep the file names below.
+
+| Screen | Image |
+|---|---|
+| Login and sign-up | ![Login](docs/screenshots/01-login.png) |
+| Chat assistant (document question and reminder approval) | ![Chat](docs/screenshots/02-chat-documents.png) |
+| Procedure answer with sources | ![RAG](docs/screenshots/03-procedure-sources.png) |
+| Trip plan with three costed options | ![Plan](docs/screenshots/04-trip-plan.png) |
+| My documents and confirmation | ![Documents](docs/screenshots/05-documents.png) |
+| Deadlines dashboard | ![Deadlines](docs/screenshots/06-deadlines.png) |
+| Reminders | ![Reminders](docs/screenshots/07-reminders.png) |
+
+## 15. Limitations and Honest Notes
 
 - **Free-tier limits.** Groq returns `429 Too Many Requests` when its token limit is reached; the app retries and can switch to the backup model, but a trip plan may take 1 to 2 minutes.
 - **Cold start.** The free Render service sleeps after 15 minutes without traffic, so the first request is slow.
@@ -295,7 +308,7 @@ The app is deployed as a **Docker web service on Render (free plan)**.
 - **Not legal advice.** Always confirm procedures on the official website.
 - **Demo data only.** Use sample documents, never real personal documents.
 
-## 15. Future Work
+## 16. Future Work
 
 - OCR for scanned documents and photos.
 - More official sources (driving licence, tax, NID) in the vector database.
@@ -304,9 +317,9 @@ The app is deployed as a **Docker web service on Render (free plan)**.
 - Streaming responses for faster perceived speed.
 - Paid or higher-limit LLM hosting for stable response times.
 
-## 16. Author
+## 17. Author
 
-**Soumit**, AI Engineering Capstone Project (Track A: Agentic Applications), Ostad, Bangladesh.
+**Soumit Dey**, Bangladesh.
 GitHub: https://github.com/soumit02
 
 ---
